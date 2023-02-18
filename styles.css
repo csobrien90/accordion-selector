@@ -1,0 +1,103 @@
+.sr-only {
+	opacity: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+body {
+	display: grid;
+	gap: 20px;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#tag-wrapper {
+	padding: 10px;
+	max-width: 400px;
+}
+
+.tag {
+	max-height: 0px;
+	overflow: hidden;
+	transition: all 0.2s;
+}
+
+.tag.selected {
+	max-height: 30px;
+}
+
+#accordion button {
+    outline: none;
+    background: none;
+    padding: 10px;   
+    border:none;
+    border-bottom: 1px solid darkslategrey; 
+    width: 100%;
+    text-align:left;
+    font-size:16px;
+    border-radius:0px;
+}
+
+#accordion button:focus {
+	border-radius:0px;
+	outline:none;
+}
+
+#accordion button:hover {
+	background-color: #f1f1f1;
+	cursor: pointer;
+}
+
+#accordion button:after {
+	content: '\002B';
+	color: #777;
+	font-weight: bold;
+	float: right;
+	margin-left: 5px;
+}
+
+#accordion button[aria-expanded='true']:after {
+	content: "\2212";
+}
+
+#accordion .input-group {
+	display: grid;
+	transition: all 0.2s;
+}
+
+#accordion .input-group.closed {
+	max-height: 0px;
+	overflow: hidden;
+	padding: 0 10px;
+}
+
+#accordion .input-group.open {
+	max-height: 300px;
+	padding: 10px
+}
+
+#accordion .checkbox-wrapper {
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-content: start;
+	gap: 10px;
+	padding: 10px;
+}
+
+@media screen and (min-width: 768px) {
+	body {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	h1 {
+		grid-column: 1/-1;
+	}
+
+	#tag-wrapper {
+		margin: 0 auto;
+	}
+}
