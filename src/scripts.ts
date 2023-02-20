@@ -1,22 +1,11 @@
-const isOpen: boolean = false
-const myName: string = 'Chad'
-const myAge: number = 32
-const me: [string, number, string] = ['Chad', 32, 'Developer']
-
-enum Job { WebDev, WebDesigner, PM }
-const job: Job = Job.WebDev
-
-const phone: any = 'Pixel'
-const tablet: any = 3
-
 /*
 __________________
 On Page Load
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 */
 
-toggleNothingSelected()
 setCheckboxesFromLocalStorage()
+toggleNothingSelected()
 
 
 /*
@@ -26,7 +15,7 @@ Event Listeners
 */
 
 // Open and close the accordion
-const buttons: NodeListOf<HTMLInputElement> = document.querySelectorAll('#accordion button')
+const buttons: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion button'))
 buttons.forEach(button => {
 	button.addEventListener('click', () => {
 		if (button.nextElementSibling) {
@@ -45,7 +34,7 @@ buttons.forEach(button => {
 })
 
 // Toggle the "Nothing Selected" message
-const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll('#accordion input[type="checkbox"]')
+const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
 checkboxes.forEach(checkbox => {
 	checkbox.addEventListener('change', () => {
 		toggleNothingSelected()
@@ -68,7 +57,7 @@ Functions
 */
 
 function toggleNothingSelected() {
-	const checkboxes: Array<HTMLInputElement> = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
+	const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
 	const hasChecked: boolean = checkboxes.some(checkbox => checkbox.checked)
 	if (hasChecked) {
 		const nothingSelected: HTMLElement = document.querySelector('#nothing-selected') as HTMLElement
@@ -80,8 +69,8 @@ function toggleNothingSelected() {
 }
 
 function updateLocalStorage() {
-	const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll('#accordion input[type="checkbox"]')
-	const checked: Array<string> = []
+	const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
+	const checked: string[] = []
 	checkboxes.forEach(checkbox => {
 		if (checkbox.checked) {
 			checked.push(checkbox.id)
@@ -91,16 +80,16 @@ function updateLocalStorage() {
 }
 
 function setCheckboxesFromLocalStorage() {
-	const checkboxes: NodeListOf<HTMLInputElement> = document.querySelectorAll('#accordion input[type="checkbox"]')
-	const checked: Array<string> = JSON.parse(localStorage.getItem('checked') || '[]')
+	const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
+	const checked: string[] = JSON.parse(localStorage.getItem('checked') || '[]')
 	checkboxes.forEach(checkbox => checkbox.checked = checked.includes(checkbox.id) ? true : false)
 	updateSelected()
 }
 
 function updateSelected() {
-	const checkedCheckboxes: Array<HTMLInputElement> = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]:checked'))
-	const checkedIds: Array<string> = checkedCheckboxes.map(checkbox => checkbox.id)
-	const tags: NodeListOf<HTMLElement> = document.querySelectorAll('.tag')
+	const checkedCheckboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]:checked'))
+	const checkedIds: string[] = checkedCheckboxes.map(checkbox => checkbox.id)
+	const tags: HTMLElement[] = Array.from(document.querySelectorAll('.tag'))
 	tags.forEach(tag => {
 		if(tag.dataset.checkid === undefined) return
 		checkedIds.includes(tag.dataset.checkid) ? tag.classList.add('selected') : tag.classList.remove('selected')
@@ -108,7 +97,7 @@ function updateSelected() {
 }
 
 function onlyAllowOnePeeker(checkbox: HTMLInputElement) {
-	const peekers: Array<HTMLInputElement> = Array.from(document.querySelectorAll('#peekers input[type="checkbox"]'))
+	const peekers: HTMLInputElement[] = Array.from(document.querySelectorAll('#peekers input[type="checkbox"]'))
 	peekers.forEach(peeker => {
 		if (peeker.id !== checkbox.id) {
 			peeker.checked = false

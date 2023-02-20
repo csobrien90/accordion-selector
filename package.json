@@ -1,15 +1,17 @@
 {
-  "name": "typescript",
+  "name": "build-your-pin-set",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel src/index.html",
+	"tsc": "tsc"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "parcel-bundler": "1.9.4",
-    "parcel-plugin-typescript": "^1.0.0"
+    "parcel-plugin-typescript": "^1.0.0",
+    "typescript": "^4.9.5"
   }
 }
