@@ -8,7 +8,7 @@ interface Data {
 	pals: Category,
 	pronouns: Category,
 	flags: Category,
-	plaques: Category
+	personalities: Category
 }
 
 interface Category {
@@ -31,55 +31,115 @@ On Page Load
 const pals: Category = {
 	'dog': {
 		name: 'Dog',
-		image: '',
+		image: 'images/pals/dog-top.png',
 		alt: ''
 	},
 	'kitty': {
 		name: 'Kitty',
-		image: '',
+		image: 'images/pals/cat-top.png',
 		alt: ''
 	},
 	'raccoon': {
 		name: 'Raccoon',
-		image: '',
+		image: 'images/pals/racoon-top.png',
 		alt: ''
 	},
 	'opossum': {
 		name: 'Opossum',
-		image: '',
+		image: 'images/pals/opossum-top.png',
 		alt: ''
 	},
 	'ghost': {
 		name: 'Ghost',
-		image: '',
+		image: 'images/pals/ghost-top.png',
 		alt: ''
 	},
 	'mothman': {
 		name: 'Mothman',
-		image: '',
+		image: 'images/pals/mothman-top.png',
 		alt: ''
 	},
 	'baba-yaga': {
 		name: 'Baba Yaga',
-		image: '',
+		image: 'images/pals/baba-yaga-top.png',
 		alt: ''
 	}
 }
 
 const pronouns: Category = {
-	'he-him': {
-		name: 'He/Him',
-		image: '',
+	'he-him-black': {
+		name: 'He/Him (Black)',
+		image: 'images/pronouns/he-him-black.png',
 		alt: ''
 	},
-	'she-her': {
-		name: 'She/Her',
-		image: '',
+	'he-him-blue': {
+		name: 'He/Him (Blue)',
+		image: 'images/pronouns/he-him-blue.png',
 		alt: ''
 	},
-	'they-them': {
-		name: 'They/Them',
-		image: '',
+	'he-him-white': {
+		name: 'He/Him (White)',
+		image: 'images/pronouns/he-him-white.png',
+		alt: ''
+	},
+	'he-they-black': {
+		name: 'He/They (Black)',
+		image: 'images/pronouns/he-they-black.png',
+		alt: ''
+	},
+	'he-they-green': {
+		name: 'He/They (Green)',
+		image: 'images/pronouns/he-they-green.png',
+		alt: ''
+	},
+	'he-they-white': {
+		name: 'He/They (White)',
+		image: 'images/pronouns/he-they-white.png',
+		alt: ''
+	},
+	'she-her-black': {
+		name: 'She/Her (Black)',
+		image: 'images/pronouns/she-her-black.png',
+		alt: ''
+	},
+	'she-her-pink': {
+		name: 'She/Her (Pink)',
+		image: 'images/pronouns/she-her-pink.png',
+		alt: ''
+	},
+	'she-her-white': {
+		name: 'She/Her (White)',
+		image: 'images/pronouns/she-her-white.png',
+		alt: ''
+	},
+	'she-they-black': {
+		name: 'She/They (Black)',
+		image: 'images/pronouns/she-they-black.png',
+		alt: ''
+	},
+	'she-they-indigo': {
+		name: 'She/They (Indigo)',
+		image: 'images/pronouns/she-they-indigo.png',
+		alt: ''
+	},
+	'she-they-white': {
+		name: 'She/They (White)',
+		image: 'images/pronouns/she-they-white.png',
+		alt: ''
+	},
+	'they-them-black': {
+		name: 'They/Them (Black)',
+		image: 'images/pronouns/they-them-black.png',
+		alt: ''
+	},
+	'they-them-purple': {
+		name: 'They/Them (Purple)',
+		image: 'images/pronouns/they-them-purple.png',
+		alt: ''
+	},
+	'they-them-white': {
+		name: 'They/Them (White)',
+		image: 'images/pronouns/they-them-white.png',
 		alt: ''
 	}
 }
@@ -87,60 +147,60 @@ const pronouns: Category = {
 const flags: Category = {
 	'rainbow': {
 		name: 'Rainbow',
-		image: '',
+		image: 'images/flags/rainbow.png',
 		alt: ''
 	},
-	'progress': {
-		name: 'Progress',
-		image: '',
+	'inclusive': {
+		name: 'Inclusive',
+		image: 'images/flags/inc.png',
 		alt: ''
 	},
 	'trans': {
 		name: 'Trans',
-		image: '',
+		image: 'images/flags/trans.png',
 		alt: ''
 	},
 	'bisexual': {
 		name: 'Bisexual',
-		image: '',
+		image: 'images/flags/bi.png',
 		alt: ''
 	},
 	'pansexual': {
 		name: 'Pansexual',
-		image: '',
+		image: 'images/flags/pan.png',
 		alt: ''
 	},
 	'nonbinary': {
 		name: 'Nonbinary',
-		image: '',
+		image: 'images/flags/nonbin.png',
 		alt: ''
 	},
 	'asexual': {
 		name: 'Asexual',
-		image: '',
+		image: 'images/flags/ase.png',
 		alt: ''
 	},
 	'lesbian': {
 		name: 'Lesbian',
-		image: '',
+		image: 'images/flags/les.png',
 		alt: ''
 	}
 }
 
-const plaques: Category = {
+const personalities: Category = {
 	'moon-phases': {
 		name: 'Moon Phases',
-		image: '',
+		image: 'images/personalities/moon.png',
 		alt: ''
 	},
 	'book-shelf': {
 		name: 'Book Shelf',
-		image: '',
+		image: 'images/personalities/books.png',
 		alt: ''
 	}
 }
 
-const data: Data = {pals, pronouns, flags, plaques}
+const data: Data = {pals, pronouns, flags, personalities}
 
 renderSelected()
 renderInputs()
@@ -219,11 +279,11 @@ function renderSelected(): void {
 	const list: HTMLUListElement = document.createElement('ul')
 	list.id = 'tag-wrapper'
 
-	const palItems: HTMLLIElement[] = renderSelectedListItems(pals)
-	const reversedPalItems: HTMLLIElement[] = renderSelectedListItems(pals).reverse()
+	const palItems: HTMLLIElement[] = renderSelectedListItems(pals, true)
+	const reversedPalItems: HTMLLIElement[] = renderSelectedListItems(pals, true, true).reverse()
 	const pronounItems: HTMLLIElement[] = renderSelectedListItems(pronouns)
 	const flagItems: HTMLLIElement[] = renderSelectedListItems(flags)
-	const plaqueItems: HTMLLIElement[] = renderSelectedListItems(plaques)
+	const plaqueItems: HTMLLIElement[] = renderSelectedListItems(personalities)
 
 	const combined: HTMLLIElement[] = [...palItems, ...pronounItems, ...flagItems, ...plaqueItems, ...reversedPalItems]
 	combined.forEach(item => list.appendChild(item))
@@ -238,12 +298,19 @@ function renderSelected(): void {
 	main.append(section)
 }
 
-function renderSelectedListItems(category: Category): HTMLLIElement[] {
+function renderSelectedListItems(category: Category, isPals: boolean = false, isBottoms: boolean = false): HTMLLIElement[] {
 	return Object.keys(category).map(checkId => {
 		const item: HTMLLIElement = document.createElement('li')
 		item.classList.add('tag')
+		if (isPals) item.classList.add('palsItem')
 		item.dataset.checkid = checkId
-		item.innerText = category[checkId].name
+
+		// Content of item
+		const img: HTMLImageElement = document.createElement('img')
+		const newSrc = isPals && isBottoms ? category[checkId].image.replace('top', 'bottom') : category[checkId].image
+		img.src = newSrc
+		img.alt = category[checkId].alt
+		item.appendChild(img)
 
 		return item
 	})

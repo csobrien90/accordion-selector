@@ -10,112 +10,172 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 var pals = {
     'dog': {
         name: 'Dog',
-        image: '',
+        image: 'images/pals/dog-top.png',
         alt: ''
     },
     'kitty': {
         name: 'Kitty',
-        image: '',
+        image: 'images/pals/cat-top.png',
         alt: ''
     },
     'raccoon': {
         name: 'Raccoon',
-        image: '',
+        image: 'images/pals/racoon-top.png',
         alt: ''
     },
     'opossum': {
         name: 'Opossum',
-        image: '',
+        image: 'images/pals/opossum-top.png',
         alt: ''
     },
     'ghost': {
         name: 'Ghost',
-        image: '',
+        image: 'images/pals/ghost-top.png',
         alt: ''
     },
     'mothman': {
         name: 'Mothman',
-        image: '',
+        image: 'images/pals/mothman-top.png',
         alt: ''
     },
     'baba-yaga': {
         name: 'Baba Yaga',
-        image: '',
+        image: 'images/pals/baba-yaga-top.png',
         alt: ''
     }
 };
 var pronouns = {
-    'he-him': {
-        name: 'He/Him',
-        image: '',
+    'he-him-black': {
+        name: 'He/Him (Black)',
+        image: 'images/pronouns/he-him-black.png',
         alt: ''
     },
-    'she-her': {
-        name: 'She/Her',
-        image: '',
+    'he-him-blue': {
+        name: 'He/Him (Blue)',
+        image: 'images/pronouns/he-him-blue.png',
         alt: ''
     },
-    'they-them': {
-        name: 'They/Them',
-        image: '',
+    'he-him-white': {
+        name: 'He/Him (White)',
+        image: 'images/pronouns/he-him-white.png',
+        alt: ''
+    },
+    'he-they-black': {
+        name: 'He/They (Black)',
+        image: 'images/pronouns/he-they-black.png',
+        alt: ''
+    },
+    'he-they-green': {
+        name: 'He/They (Green)',
+        image: 'images/pronouns/he-they-green.png',
+        alt: ''
+    },
+    'he-they-white': {
+        name: 'He/They (White)',
+        image: 'images/pronouns/he-they-white.png',
+        alt: ''
+    },
+    'she-her-black': {
+        name: 'She/Her (Black)',
+        image: 'images/pronouns/she-her-black.png',
+        alt: ''
+    },
+    'she-her-pink': {
+        name: 'She/Her (Pink)',
+        image: 'images/pronouns/she-her-pink.png',
+        alt: ''
+    },
+    'she-her-white': {
+        name: 'She/Her (White)',
+        image: 'images/pronouns/she-her-white.png',
+        alt: ''
+    },
+    'she-they-black': {
+        name: 'She/They (Black)',
+        image: 'images/pronouns/she-they-black.png',
+        alt: ''
+    },
+    'she-they-indigo': {
+        name: 'She/They (Indigo)',
+        image: 'images/pronouns/she-they-indigo.png',
+        alt: ''
+    },
+    'she-they-white': {
+        name: 'She/They (White)',
+        image: 'images/pronouns/she-they-white.png',
+        alt: ''
+    },
+    'they-them-black': {
+        name: 'They/Them (Black)',
+        image: 'images/pronouns/they-them-black.png',
+        alt: ''
+    },
+    'they-them-purple': {
+        name: 'They/Them (Purple)',
+        image: 'images/pronouns/they-them-purple.png',
+        alt: ''
+    },
+    'they-them-white': {
+        name: 'They/Them (White)',
+        image: 'images/pronouns/they-them-white.png',
         alt: ''
     }
 };
 var flags = {
     'rainbow': {
         name: 'Rainbow',
-        image: '',
+        image: 'images/flags/rainbow.png',
         alt: ''
     },
-    'progress': {
-        name: 'Progress',
-        image: '',
+    'inclusive': {
+        name: 'Inclusive',
+        image: 'images/flags/inc.png',
         alt: ''
     },
     'trans': {
         name: 'Trans',
-        image: '',
+        image: 'images/flags/trans.png',
         alt: ''
     },
     'bisexual': {
         name: 'Bisexual',
-        image: '',
+        image: 'images/flags/bi.png',
         alt: ''
     },
     'pansexual': {
         name: 'Pansexual',
-        image: '',
+        image: 'images/flags/pan.png',
         alt: ''
     },
     'nonbinary': {
         name: 'Nonbinary',
-        image: '',
+        image: 'images/flags/nonbin.png',
         alt: ''
     },
     'asexual': {
         name: 'Asexual',
-        image: '',
+        image: 'images/flags/ase.png',
         alt: ''
     },
     'lesbian': {
         name: 'Lesbian',
-        image: '',
+        image: 'images/flags/les.png',
         alt: ''
     }
 };
-var plaques = {
+var personalities = {
     'moon-phases': {
         name: 'Moon Phases',
-        image: '',
+        image: 'images/personalities/moon.png',
         alt: ''
     },
     'book-shelf': {
         name: 'Book Shelf',
-        image: '',
+        image: 'images/personalities/books.png',
         alt: ''
     }
 };
-var data = { pals: pals, pronouns: pronouns, flags: flags, plaques: plaques };
+var data = { pals: pals, pronouns: pronouns, flags: flags, personalities: personalities };
 renderSelected();
 renderInputs();
 setCheckboxesFromLocalStorage();
@@ -178,11 +238,11 @@ function renderSelected() {
     section.append(heading);
     var list = document.createElement('ul');
     list.id = 'tag-wrapper';
-    var palItems = renderSelectedListItems(pals);
-    var reversedPalItems = renderSelectedListItems(pals).reverse();
+    var palItems = renderSelectedListItems(pals, true);
+    var reversedPalItems = renderSelectedListItems(pals, true, true).reverse();
     var pronounItems = renderSelectedListItems(pronouns);
     var flagItems = renderSelectedListItems(flags);
-    var plaqueItems = renderSelectedListItems(plaques);
+    var plaqueItems = renderSelectedListItems(personalities);
     var combined = __spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], palItems, true), pronounItems, true), flagItems, true), plaqueItems, true), reversedPalItems, true);
     combined.forEach(function (item) { return list.appendChild(item); });
     section.append(list);
@@ -192,12 +252,20 @@ function renderSelected() {
     section.append(nothingSelected);
     main.append(section);
 }
-function renderSelectedListItems(category) {
+function renderSelectedListItems(category, isPals, isBottoms) {
+    if (isPals === void 0) { isPals = false; }
+    if (isBottoms === void 0) { isBottoms = false; }
     return Object.keys(category).map(function (checkId) {
         var item = document.createElement('li');
         item.classList.add('tag');
+        if (isPals)
+            item.classList.add('palsItem');
         item.dataset.checkid = checkId;
-        item.innerText = category[checkId].name;
+        var img = document.createElement('img');
+        var newSrc = isPals && isBottoms ? category[checkId].image.replace('top', 'bottom') : category[checkId].image;
+        img.src = newSrc;
+        img.alt = category[checkId].alt;
+        item.appendChild(img);
         return item;
     });
 }

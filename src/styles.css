@@ -17,17 +17,30 @@ ul {
 
 #tag-wrapper {
 	padding: 10px;
-	max-width: 400px;
+	max-width: 100%;
 }
 
 .tag {
+	display: grid;
+	place-items: center;
 	max-height: 0px;
 	overflow: hidden;
 	transition: all 0.2s;
 }
 
+.tag img {
+	width: 100%;
+	max-width: 800px;
+}
+
+.tag.palsItem img {
+	width: 80%;
+	max-width: 700px;
+}
+
 .tag.selected {
-	max-height: 30px;
+	max-height: 500px;
+	padding: 5px;
 }
 
 #accordion button {
@@ -76,7 +89,7 @@ ul {
 }
 
 #accordion .input-group.open {
-	max-height: 300px;
+	max-height: 600px;
 	padding: 10px
 }
 
