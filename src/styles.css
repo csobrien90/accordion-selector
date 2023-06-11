@@ -18,14 +18,21 @@ ul {
 #tag-wrapper {
 	padding: 10px;
 	max-width: 100%;
+	min-height: 400px;
 }
 
 .tag {
 	display: grid;
 	place-items: center;
 	max-height: 0px;
+	padding: 0px;
 	overflow: hidden;
-	transition: all 0.2s;
+	transition: max-height 2s;
+}
+
+.tag.palsItem {
+	position: absolute;
+	opacity: 0
 }
 
 .tag img {
@@ -34,13 +41,25 @@ ul {
 }
 
 .tag.palsItem img {
+	width: 75%;
+	max-width: 600px;
+}
+
+.tag.palsItem img[src="images/pals/cat-bottom.png"],
+.tag.palsItem img[src="images/pals/opossum-bottom.png"] {
+	width: 100%;
+}
+
+.tag.plaque img {
 	width: 80%;
-	max-width: 700px;
 }
 
 .tag.selected {
-	max-height: 500px;
-	padding: 5px;
+	margin-top: 0;
+	max-height: 550px;
+	padding: 3px;
+	opacity: 100%;
+	position: static;
 }
 
 #accordion button {

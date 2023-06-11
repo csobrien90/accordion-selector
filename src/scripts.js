@@ -258,8 +258,7 @@ function renderSelectedListItems(category, isPals, isBottoms) {
     return Object.keys(category).map(function (checkId) {
         var item = document.createElement('li');
         item.classList.add('tag');
-        if (isPals)
-            item.classList.add('palsItem');
+        isPals ? item.classList.add('palsItem') : item.classList.add('plaque');
         item.dataset.checkid = checkId;
         var img = document.createElement('img');
         var newSrc = isPals && isBottoms ? category[checkId].image.replace('top', 'bottom') : category[checkId].image;

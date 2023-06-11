@@ -250,7 +250,12 @@ function updateSelected() {
 	const tags: HTMLElement[] = Array.from(document.querySelectorAll('.tag'))
 	tags.forEach(tag => {
 		if(tag.dataset.checkid === undefined) return
-		checkedIds.includes(tag.dataset.checkid) ? tag.classList.add('selected') : tag.classList.remove('selected')
+		if (checkedIds.includes(tag.dataset.checkid)) {
+			tag.classList.add('selected')
+		} else {
+			tag.classList.remove('selected')
+		}
+
 	})
 }
 
@@ -302,7 +307,8 @@ function renderSelectedListItems(category: Category, isPals: boolean = false, is
 	return Object.keys(category).map(checkId => {
 		const item: HTMLLIElement = document.createElement('li')
 		item.classList.add('tag')
-		if (isPals) item.classList.add('palsItem')
+		isPals ? item.classList.add('palsItem') : item.classList.add('plaque')
+		
 		item.dataset.checkid = checkId
 
 		// Content of item
