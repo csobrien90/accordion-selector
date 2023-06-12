@@ -342,7 +342,7 @@ function renderInputs(): void {
 		const category: Category = data[id]
 		const listItem: HTMLLIElement = document.createElement('li')
 		listItem.id = id
-		listItem.classList.add('accordian-item')
+		listItem.classList.add('accordion-item')
 
 		const button: HTMLButtonElement = document.createElement('button')
 		button.innerText = capitalize(id)
@@ -350,33 +350,41 @@ function renderInputs(): void {
 		// button.ariaControls = `${id}-input-group`
 
 		button.addEventListener('click', () => {
-			if (button.nextElementSibling) {
-				button.nextElementSibling.classList.toggle('open')
-				if (button.nextElementSibling.classList.contains('open')) {
-					// Set aria attributes to open
-					button.ariaExpanded = 'true'
-					button.nextElementSibling.setAttribute('aria-hidden', 'false')
-				} else {
-					// Set aria attributes to closed
-					button.ariaExpanded = 'false'
-					button.nextElementSibling.setAttribute('aria-hidden', 'true')
-				}
+			const isOpen: boolean = button.nextElementSibling.classList.contains('open')
+
+			// Close all buttons and open this one
+			const inputGroups: HTMLDivElement[] = Array.from(document.querySelectorAll('.input-group'))
+			inputGroups.forEach(group => group.classList.remove('open'))
+			
+			const allButtons: HTMLButtonElement[] = Array.from(document.querySelectorAll('.accordion-item button'))
+			allButtons.forEach(button => {
+				button.ariaExpanded = 'false'
+				button.nextElementSibling.setAttribute('aria-hidden', 'true')
+			})
+
+			if (!isOpen) {
+				button.nextElementSibling.classList.add('open')
+
+				// Open list and adjust button attributes
+				button.ariaExpanded = 'true'
+				button.nextElementSibling.setAttribute('aria-hidden', 'false')
 			}
+			
 		})
 
 		listItem.appendChild(button)
 
 		const listItemWrapper: HTMLDivElement = document.createElement('div')
-			// 			<div id="pals-input-group" class="input-group closed" aria-hidden="true">
+		// <div id="pals-input-group" class="input-group" aria-hidden="true">
 		listItemWrapper.id = `${id}-input-group`
 		listItemWrapper.classList.add('input-group')
-		listItemWrapper.classList.add('closed')
 		listItemWrapper.ariaHidden = 'true'
 
 		Object.keys(category).forEach((pin) => {
 			const label: HTMLLabelElement = document.createElement('label')
 			label.setAttribute('for', pin)
 			label.classList.add('checkbox-wrapper')
+			label.ariaLabel = pin
 
 			const checkbox: HTMLInputElement = document.createElement('input')
 			checkbox.type = 'checkbox'

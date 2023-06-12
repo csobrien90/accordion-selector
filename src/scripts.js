@@ -215,7 +215,12 @@ function updateSelected() {
     tags.forEach(function (tag) {
         if (tag.dataset.checkid === undefined)
             return;
-        checkedIds.includes(tag.dataset.checkid) ? tag.classList.add('selected') : tag.classList.remove('selected');
+        if (checkedIds.includes(tag.dataset.checkid)) {
+            tag.classList.add('selected');
+        }
+        else {
+            tag.classList.remove('selected');
+        }
     });
 }
 function onlyAllowOnePal(checkbox) {
@@ -284,33 +289,35 @@ function renderInputs() {
         var category = data[id];
         var listItem = document.createElement('li');
         listItem.id = id;
-        listItem.classList.add('accordian-item');
+        listItem.classList.add('accordion-item');
         var button = document.createElement('button');
         button.innerText = capitalize(id);
         button.ariaExpanded = 'false';
         button.addEventListener('click', function () {
-            if (button.nextElementSibling) {
-                button.nextElementSibling.classList.toggle('open');
-                if (button.nextElementSibling.classList.contains('open')) {
-                    button.ariaExpanded = 'true';
-                    button.nextElementSibling.setAttribute('aria-hidden', 'false');
-                }
-                else {
-                    button.ariaExpanded = 'false';
-                    button.nextElementSibling.setAttribute('aria-hidden', 'true');
-                }
+            var isOpen = button.nextElementSibling.classList.contains('open');
+            var inputGroups = Array.from(document.querySelectorAll('.input-group'));
+            inputGroups.forEach(function (group) { return group.classList.remove('open'); });
+            var allButtons = Array.from(document.querySelectorAll('.accordion-item button'));
+            allButtons.forEach(function (button) {
+                button.ariaExpanded = 'false';
+                button.nextElementSibling.setAttribute('aria-hidden', 'true');
+            });
+            if (!isOpen) {
+                button.nextElementSibling.classList.add('open');
+                button.ariaExpanded = 'true';
+                button.nextElementSibling.setAttribute('aria-hidden', 'false');
             }
         });
         listItem.appendChild(button);
         var listItemWrapper = document.createElement('div');
         listItemWrapper.id = "".concat(id, "-input-group");
         listItemWrapper.classList.add('input-group');
-        listItemWrapper.classList.add('closed');
         listItemWrapper.ariaHidden = 'true';
         Object.keys(category).forEach(function (pin) {
             var label = document.createElement('label');
             label.setAttribute('for', pin);
             label.classList.add('checkbox-wrapper');
+            label.ariaLabel = pin;
             var checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = checkbox.name = checkbox.value = pin;
