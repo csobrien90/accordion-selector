@@ -16,11 +16,12 @@ body {
 	justify-items: center;
 }
 
-main {
+#wrapper {
 	display: grid;
 	gap: 20px;
 	grid-template-columns: 1fr;
 	max-width: 1440px;
+	width: 100%;
 }
 
 ul {
@@ -78,13 +79,18 @@ ul {
 	max-width: 600px;
 }
 
-#tag-wrapper .tag.palsItem img[src="images/pals/cat-bottom.png"],
-#tag-wrapper .tag.palsItem img[src="images/pals/opossum-bottom.png"] {
+#tag-wrapper .tag.palsItem img[src*="cat-bottom.png"],
+#tag-wrapper .tag.palsItem img[src*="opossum-bottom.png"] {
 	width: 100%;
+	max-width: none;
 }
 
 #tag-wrapper .tag.plaque img {
 	width: 80%;
+}
+
+#nothing-selected {
+	font-size: 30px;
 }
 
 
@@ -110,13 +116,13 @@ ul {
 
 #accordion button:hover, #accordion button:focus {
 	background-color: var(--dk-purple);
-	color: var(--pink);
+	color: white;
 	cursor: pointer;
 }
 
 #accordion button:after {
 	content: '\002B';
-	color: #777;
+	color: white;
 	font-weight: bold;
 	float: right;
 	margin-left: 5px;

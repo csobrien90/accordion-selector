@@ -10,168 +10,175 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 var pals = {
     'dog': {
         name: 'Dog',
-        image: 'images/pals/dog-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/dog-top.png?v=1686615969',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/dog-bottom.png?v=1686615970',
         alt: ''
     },
     'kitty': {
         name: 'Kitty',
-        image: 'images/pals/cat-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/cat-top.png?v=1686615970',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/cat-bottom.png?v=1686615969',
         alt: ''
     },
     'raccoon': {
         name: 'Raccoon',
-        image: 'images/pals/racoon-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/racoon-top.png?v=1686615969',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/racoon-bottom.png?v=1686615969',
         alt: ''
     },
     'opossum': {
         name: 'Opossum',
-        image: 'images/pals/opossum-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/opossum-top.png?v=1686615970',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/opossum-bottom.png?v=1686615969',
         alt: ''
     },
     'ghost': {
         name: 'Ghost',
-        image: 'images/pals/ghost-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/ghost-top.png?v=1686615969',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/ghost-bottom.png?v=1686615970',
         alt: ''
     },
     'mothman': {
         name: 'Mothman',
-        image: 'images/pals/mothman-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/mothman-top.png?v=1686615969',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/mothman-bottom.png?v=1686615969',
         alt: ''
     },
     'baba-yaga': {
         name: 'Baba Yaga',
-        image: 'images/pals/baba-yaga-top.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/baba-yaga-top.png?v=1686615969',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/baba-yaga-bottom.png?v=1686615969',
         alt: ''
     }
 };
 var pronouns = {
     'he-him-black': {
         name: 'He/Him (Black)',
-        image: 'images/pronouns/he-him-black.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/he-him-black.png?v=1686616517',
         alt: ''
     },
     'he-him-blue': {
         name: 'He/Him (Blue)',
-        image: 'images/pronouns/he-him-blue.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/he-him-blue.png?v=1686616517',
         alt: ''
     },
     'he-him-white': {
         name: 'He/Him (White)',
-        image: 'images/pronouns/he-him-white.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/he-him-white.png?v=1686616517r',
         alt: ''
     },
     'he-they-black': {
         name: 'He/They (Black)',
-        image: 'images/pronouns/he-they-black.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/he-they-black.png?v=1686616517',
         alt: ''
     },
     'he-they-green': {
         name: 'He/They (Green)',
-        image: 'images/pronouns/he-they-green.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/he-they-green.png?v=1686616517',
         alt: ''
     },
     'he-they-white': {
         name: 'He/They (White)',
-        image: 'images/pronouns/he-they-white.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/he-they-white.png?v=1686616517',
         alt: ''
     },
     'she-her-black': {
         name: 'She/Her (Black)',
-        image: 'images/pronouns/she-her-black.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/she-her-black.png?v=1686616517',
         alt: ''
     },
     'she-her-pink': {
         name: 'She/Her (Pink)',
-        image: 'images/pronouns/she-her-pink.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/she-her-pink.png?v=1686616517',
         alt: ''
     },
     'she-her-white': {
         name: 'She/Her (White)',
-        image: 'images/pronouns/she-her-white.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/she-her-white.png?v=1686616517',
         alt: ''
     },
     'she-they-black': {
         name: 'She/They (Black)',
-        image: 'images/pronouns/she-they-black.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/she-they-black.png?v=1686616517',
         alt: ''
     },
     'she-they-indigo': {
         name: 'She/They (Indigo)',
-        image: 'images/pronouns/she-they-indigo.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/she-they-indigo.png?v=1686616517',
         alt: ''
     },
     'she-they-white': {
         name: 'She/They (White)',
-        image: 'images/pronouns/she-they-white.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/she-they-white.png?v=1686616517',
         alt: ''
     },
     'they-them-black': {
         name: 'They/Them (Black)',
-        image: 'images/pronouns/they-them-black.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/they-them-black.png?v=1686616517',
         alt: ''
     },
     'they-them-purple': {
         name: 'They/Them (Purple)',
-        image: 'images/pronouns/they-them-purple.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/they-them-purple.png?v=1686616517',
         alt: ''
     },
     'they-them-white': {
         name: 'They/Them (White)',
-        image: 'images/pronouns/they-them-white.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/they-them-white.png?v=1686616517',
         alt: ''
     }
 };
 var flags = {
     'rainbow': {
         name: 'Rainbow',
-        image: 'images/flags/rainbow.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/rainbow.png?v=1686615804',
         alt: ''
     },
     'inclusive': {
         name: 'Inclusive',
-        image: 'images/flags/inc.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/inc.png?v=1686615803',
         alt: ''
     },
     'trans': {
         name: 'Trans',
-        image: 'images/flags/trans.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/trans.png?v=1686615803',
         alt: ''
     },
     'bisexual': {
         name: 'Bisexual',
-        image: 'images/flags/bi.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/bi.png?v=1686615803',
         alt: ''
     },
     'pansexual': {
         name: 'Pansexual',
-        image: 'images/flags/pan.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/pan.png?v=1686615803',
         alt: ''
     },
     'nonbinary': {
         name: 'Nonbinary',
-        image: 'images/flags/nonbin.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/nonbin.png?v=1686615803',
         alt: ''
     },
     'asexual': {
         name: 'Asexual',
-        image: 'images/flags/ase.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/ase.png?v=1686615803',
         alt: ''
     },
     'lesbian': {
         name: 'Lesbian',
-        image: 'images/flags/les.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/les.png?v=1686615803',
         alt: ''
     }
 };
 var personalities = {
     'moon-phases': {
         name: 'Moon Phases',
-        image: 'images/personalities/moon.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/moon.png?v=1686616702',
         alt: ''
     },
     'book-shelf': {
         name: 'Book Shelf',
-        image: 'images/personalities/books.png',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/books.png?v=1686616702',
         alt: ''
     }
 };
@@ -200,11 +207,14 @@ function updateLocalStorage() {
             checked.push(checkbox.id);
         }
     });
+    if (checked.length === 0) {
+        checked = ['kitty', 'inclusive'];
+    }
     localStorage.setItem('checked', JSON.stringify(checked));
 }
 function setCheckboxesFromLocalStorage() {
     var checkboxes = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'));
-    var checked = JSON.parse(localStorage.getItem('checked') || '[]');
+    var checked = JSON.parse(localStorage.getItem('checked') || JSON.stringify(['kitty', 'inclusive']));
     checkboxes.forEach(function (checkbox) { return checkbox.checked = checked.includes(checkbox.id) ? true : false; });
     updateSelected();
 }
@@ -232,7 +242,7 @@ function onlyAllowOnePal(checkbox) {
     });
 }
 function renderSelected() {
-    var main = document.querySelector('main');
+    var main = document.querySelector('#wrapper');
     if (!main)
         return;
     var section = document.createElement('section');
@@ -250,11 +260,11 @@ function renderSelected() {
     var plaqueItems = renderSelectedListItems(personalities);
     var combined = __spreadArray(__spreadArray(__spreadArray(__spreadArray(__spreadArray([], palItems, true), pronounItems, true), flagItems, true), plaqueItems, true), reversedPalItems, true);
     combined.forEach(function (item) { return list.appendChild(item); });
-    section.append(list);
     var nothingSelected = document.createElement('p');
     nothingSelected.id = 'nothing-selected';
-    nothingSelected.innerText = 'Select some tags!';
+    nothingSelected.innerText = 'Pick some pins!';
     section.append(nothingSelected);
+    section.append(list);
     main.append(section);
 }
 function renderSelectedListItems(category, isPals, isBottoms) {
@@ -266,7 +276,7 @@ function renderSelectedListItems(category, isPals, isBottoms) {
         isPals ? item.classList.add('palsItem') : item.classList.add('plaque');
         item.dataset.checkid = checkId;
         var img = document.createElement('img');
-        var newSrc = isPals && isBottoms ? category[checkId].image.replace('top', 'bottom') : category[checkId].image;
+        var newSrc = isPals && isBottoms ? category[checkId].image2 : category[checkId].image;
         img.src = newSrc;
         img.alt = category[checkId].alt;
         item.appendChild(img);
@@ -274,13 +284,13 @@ function renderSelectedListItems(category, isPals, isBottoms) {
     });
 }
 function renderInputs() {
-    var main = document.querySelector('main');
+    var main = document.querySelector('#wrapper');
     if (!main)
         return;
     var section = document.createElement('section');
     section.id = 'selection-input';
     var heading = document.createElement('h2');
-    heading.innerText = 'Select tags';
+    heading.innerText = 'Select your plaques';
     heading.classList.add('sr-only');
     section.append(heading);
     var list = document.createElement('ul');
@@ -291,7 +301,8 @@ function renderInputs() {
         listItem.id = id;
         listItem.classList.add('accordion-item');
         var button = document.createElement('button');
-        button.innerText = capitalize(id);
+        var buttonText = id === 'flags' ? 'Pride Flags' : capitalize(id);
+        button.innerText = buttonText;
         button.ariaExpanded = 'false';
         button.addEventListener('click', function () {
             var isOpen = button.nextElementSibling.classList.contains('open');
