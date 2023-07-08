@@ -93,6 +93,19 @@ ul {
 	font-size: 30px;
 }
 
+#share {
+	padding: 20px;
+	background-color: var(--pink);
+	border: none;
+	color: black;
+	font-size: 30px;
+	cursor: pointer;
+}
+
+#share:hover {
+	background-color: var(--hot-pink);
+	color: white;
+}
 
 /* Accordian Selector UI */
 
@@ -142,7 +155,7 @@ ul {
 }
 
 #accordion .input-group.open {
-	max-height: 700px;
+	max-height: 1000px;
 	padding: 10px
 }
 

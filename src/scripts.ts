@@ -71,6 +71,18 @@ const pals: Category = {
         image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/baba-yaga-top.png?v=1686615969',
         image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/baba-yaga-bottom.png?v=1686615969',
         alt: ''
+    },
+    'sheep': {
+        name: 'Sheep',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/sheep-top.png?v=1686715127',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/sheep-bottom.png?v=1686715149',
+        alt: ''
+    },
+    'baphomet': {
+        name: 'Baphomet',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/baphomet-top.png?v=1686714684',
+        image2: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/baphomet-bottom.png?v=1686714811',
+        alt: ''
     }
 };
 const pronouns: Category = {
@@ -148,6 +160,21 @@ const pronouns: Category = {
         name: 'They/Them (White)',
         image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/they-them-white.png?v=1686616517',
         alt: ''
+    },
+    'any-black': {
+        name: 'Any Pronouns (Black)',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/any-black.png?v=1688430796',
+        alt: ''
+    },
+    'any-yellow': {
+        name: 'Any Pronouns (Yellow)',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/any-yellow.png?v=1688430797',
+        alt: ''
+    },
+    'any-white': {
+        name: 'Any Pronouns (White)',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/any-white.png?v=1688430796',
+        alt: ''
     }
 };
 const flags: Category = {
@@ -190,7 +217,62 @@ const flags: Category = {
         name: 'Lesbian',
         image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/les.png?v=1686615803',
         alt: ''
-    }
+    },
+    'disability': {
+        name: 'Disability',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/disab.png?v=1686713434',
+        alt: ''
+    },
+    'agender': {
+        name: 'Agender',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/agen.png?v=1686713434',
+        alt: ''
+    },
+    'genderqueer': {
+        name: 'Genderqueer',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/gq.png?v=1686795624',
+        alt: ''
+    },
+    'omnisexual': {
+        name: 'Omnisexual',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/omni.png?v=1686795625',
+        alt: ''
+    },
+    'poly': {
+        name: 'Polyamorous',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/poly.png?v=1686795624',
+        alt: ''
+    },
+	'fluid': {
+		name: 'Gender Fluid',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/fluid.png?v=1687648708',
+		alt: ''
+	},
+	'demiboy': {
+		name: 'Demiboy',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/demiboy.png?v=1687648708',
+		alt: ''
+	},
+	'demigirl': {
+		name: 'Demigirl',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/demigirl.png?v=1687648708',
+		alt: ''
+	},
+	'demirom': {
+		name: 'Demiromantic',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/demirom.png?v=1688786961',
+		alt: ''
+	},
+	'demisex': {
+		name: 'Demisexual',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/demisex.png?v=1688786961',
+		alt: ''
+	},
+	'arom': {
+		name: 'Aromantic',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/arom.png?v=1688786961',
+		alt: ''
+	}
 };
 const personalities: Category = {
     'moon-phases': {
@@ -202,13 +284,39 @@ const personalities: Category = {
         name: 'Book Shelf',
         image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/books.png?v=1686616702',
         alt: ''
-    }
+    },
+    'plant-shelf': {
+        name: 'Plant Shelf',
+        image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/plants.png?v=1686795929',
+        alt: ''
+    },
+	'crafts': {
+		name: 'Crafts',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/crafts.png?v=1687268543',
+		alt: ''
+	},
+	'dice': {
+		name: 'Dice',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/dice.png?v=1687268543',
+		alt: ''
+	},
+	'neurospicy': {
+		name: 'Neurospicy',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/neurospicy.png?v=1687648563',
+		alt: ''
+	},
+	'gamer': {
+		name: 'Gamer',
+		image: 'https://cdn.shopify.com/s/files/1/0596/8088/2882/files/gamer.png?v=1688786995',
+		alt: ''
+	},
 };
 
 const data: Data = {pals, pronouns, flags, personalities}
 
 renderSelected()
 renderInputs()
+renderShareButton()
 setCheckboxesFromLocalStorage()
 toggleNothingSelected()
 
@@ -424,6 +532,47 @@ function renderInputs(): void {
 	})
 
 	main.appendChild(list)
+}
+
+function renderShareButton():void {
+	const main: HTMLDivElement | null = document.querySelector('#wrapper')
+	if (!main) return
+
+	const shareButton: HTMLButtonElement = document.createElement('button')
+	shareButton.id = 'share'
+	shareButton.innerText = 'Share your set!'
+
+	shareButton.addEventListener('click', async (e: Event): Promise<void> => {
+		e.preventDefault()
+
+		const setDiv: HTMLDivElement | null = document.querySelector('#tag-wrapper')
+		if (!setDiv) return
+
+		// @ts-ignore
+		const canvas: HTMLCanvasElement = await html2canvas(setDiv, {useCORS: true})
+		const dataUrl: string = canvas.toDataURL()
+
+		const blob: Blob = await ((await fetch(dataUrl)).blob())
+		
+		const files: File[] = [new File([blob], 'My-Pronoun-Pin-Set.png', {
+			type: blob.type,
+			lastModified: new Date().getTime()
+		})]
+		
+		const toShare: ShareData = {files}
+
+		if (navigator.canShare(toShare))  {
+			navigator.share(toShare).then(() => {
+				console.log('Share successful!')
+			}).catch(() => {
+				console.error('Share failed - something went wrong during share.')
+			})
+		} else {
+			console.error('Share failed - content is not shareable.')
+		}
+	})
+
+	main.appendChild(shareButton)
 }
 
 function capitalize(word: string): string {
