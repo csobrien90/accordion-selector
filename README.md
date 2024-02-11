@@ -1,6 +1,8 @@
 # Build Your Pin Set
 
-*An accordion selector component that takes arrays of data and generates an interface for selecting and previewing options. It is written in Typescript but ships ready to build with Webpack for integration as vanilla JS. Its initial implementation was for the Pronoun Pals pin set builder at https://kittywithacupcake.com/pages/build-your-pronoun-pals-pin-set*
+An accordion selector component that takes arrays of data and generates an interface for selecting and previewing options. It is written in Typescript but ships ready to build with Webpack for integration as vanilla JS. Choices are stored in local storage and can be shared using the HTML2Canvas library and the Share API.
+
+*Check out this implementation for the Pronoun Pals pin set builder at https://kittywithacupcake.com/pages/build-your-pronoun-pals-pin-set*
 
 
 ## Getting Started
