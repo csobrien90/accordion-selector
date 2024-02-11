@@ -52,9 +52,3 @@ const categoryTitle: Category = {
 export const selectorData: Data = {categoryTitle, ...} // Include all categories
 ``` 
 Currently the component is set up to use four categories: pals, pronouns, flags, personalities.
-
-
-
-## To Do
-
-- Finish "Share your set" feature
