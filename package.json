@@ -1,17 +1,18 @@
 {
-  "name": "build-your-pin-set",
+  "name": "accordion-selector",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "parcel src/index.html",
-	"tsc": "tsc -w"
+	"start": "webpack --watch",
+    "build": "webpack --env production"
   },
-  "author": "",
+  "author": "Chad O'Brien",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "parcel-bundler": "1.9.4",
-    "parcel-plugin-typescript": "^1.0.0",
-    "typescript": "^4.9.5"
+    "ts-loader": "^9.5.1",
+    "typescript": "^4.9.5",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
   }
 }

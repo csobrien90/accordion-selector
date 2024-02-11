@@ -1,4 +1,6 @@
+.cache
 node_modules
 dist
-.cache
-data.ts
+images
+src/data.ts
+*.js

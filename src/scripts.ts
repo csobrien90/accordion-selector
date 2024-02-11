@@ -1,5 +1,5 @@
 import { Category, Data } from './types'
-import { pinData } from './data'
+import { selectorData } from './data'
 
 /*
 __________________
@@ -7,7 +7,7 @@ On Page Load
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 */
 
-const {pals, pronouns, flags, personalities}: Data = pinData
+const {pals, pronouns, flags, personalities}: Data = selectorData
 
 renderSelected()
 renderInputs()
@@ -148,8 +148,8 @@ function renderInputs(): void {
 	const list: HTMLUListElement = document.createElement('ul')
 	list.id = 'accordion'
 
-	Object.keys(pinData).forEach((id: keyof Data) => {
-		const category: Category = pinData[id]
+	Object.keys(selectorData).forEach((id: keyof Data) => {
+		const category: Category = selectorData[id]
 		const listItem: HTMLLIElement = document.createElement('li')
 		listItem.id = id
 		listItem.classList.add('accordion-item')

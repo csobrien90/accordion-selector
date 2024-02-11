@@ -1,13 +1,16 @@
 /* Global */
 
 :root {
-	--pink: #f8daea;
-	--hot-pink: #fe65ce;
-	--turq: #97f0e8;
-	--purple: #ad78d1;
-	--dk-purple: #34296a;
-	font-family: sans-serif;
-	/* font-family: Franxurter Totally (fat and regular) */
+	--color-1: #f8daea;
+	--color-2: #fe65ce;
+	--color-3: #97f0e8;
+	--color-4: #ad78d1;
+	--color-5: #34296a;
+	--primary-font: sans-serif;
+}
+
+* {
+	font-family: var(primary-font) sans-serif;
 }
 
 body {
@@ -101,7 +104,7 @@ ul {
 
 #share {
 	padding: 20px;
-	background-color: var(--pink);
+	background-color: var(--color-1);
 	border: none;
 	color: black;
 	font-size: 30px;
@@ -109,7 +112,7 @@ ul {
 }
 
 #share:hover {
-	background-color: var(--hot-pink);
+	background-color: var(--color-2);
 	color: white;
 }
 
@@ -117,13 +120,13 @@ ul {
 
 #accordion {
 	width: 100%;
-	color: var(--dk-purple);
+	color: var(--color-5);
 	font-size: 20px;
 }
 
 #accordion button {
     outline: none;
-    background: var(--purple);
+    background: var(--color-4);
     padding: 16px;   
     border:none;
     border-bottom: 1px solid darkslategrey;
@@ -134,7 +137,7 @@ ul {
 }
 
 #accordion button:hover, #accordion button:focus {
-	background-color: var(--dk-purple);
+	background-color: var(--color-5);
 	color: white;
 	cursor: pointer;
 }
@@ -154,7 +157,7 @@ ul {
 #accordion .input-group {
 	display: grid;
 	transition: max-height 0.3s ease-in-out;
-	background-color: var(--pink);
+	background-color: var(--color-1);
 	max-height: 0px;
 	overflow: hidden;
 	padding: 0 10px;
