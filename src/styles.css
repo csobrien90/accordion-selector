@@ -80,9 +80,15 @@ ul {
 }
 
 #tag-wrapper .tag.palsItem img[src*="cat-bottom.png"],
+#tag-wrapper .tag.palsItem img[src*="cat-black-bottom.png"],
 #tag-wrapper .tag.palsItem img[src*="opossum-bottom.png"] {
 	width: 100%;
 	max-width: none;
+}
+
+#tag-wrapper .tag.palsItem img[src*="raven-top.png"] {
+	scale: 1.05;
+	margin-bottom: 6px;
 }
 
 #tag-wrapper .tag.plaque img {
@@ -107,7 +113,7 @@ ul {
 	color: white;
 }
 
-/* Accordian Selector UI */
+/* Accordion Selector UI */
 
 #accordion {
 	width: 100%;
