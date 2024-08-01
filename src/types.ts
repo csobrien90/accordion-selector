@@ -8,16 +8,19 @@ export interface Data {
 	pals: Category,
 	pronouns: Category,
 	flags: Category,
-	personalities: Category
+	personalities: Category,
+	accessibility: Category,
 }
 
 export interface Category {
 	[slug: string]: Pin
 }
 
-interface Pin {
-	name: string,
-	image: string,
-	image2?: string,
+export interface Pin {
+	name: string
+	image: string
+	image2?: string
 	alt: string
+	id: string
+	price: number
 }

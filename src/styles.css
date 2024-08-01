@@ -70,6 +70,7 @@ ul {
 	position: relative;
 	transition: max-height .3s;
 	visibility: visible;
+	overflow: visible;
 }
 
 #tag-wrapper .tag img {
@@ -89,7 +90,20 @@ ul {
 	max-width: none;
 }
 
-#tag-wrapper .tag.palsItem img[src*="raven-top.png"] {
+#tag-wrapper .tag.palsItem img[src*="fox-top.png"],
+#tag-wrapper .tag.palsItem img[src*="fox-bottom.png"] {
+	width: 96%;
+	max-width: none;
+}
+
+#tag-wrapper .tag.palsItem img[src*="shark-bottom.png"] {
+	width: 84%;
+	margin-left: -2px;
+}
+
+#tag-wrapper .tag.palsItem img[src*="raven-top.png"],
+#tag-wrapper .tag.palsItem img[src*="fox-top.png"],
+#tag-wrapper .tag.palsItem img[src*="shark-top.png"] {
 	scale: 1.05;
 	margin-bottom: 6px;
 }
@@ -102,16 +116,23 @@ ul {
 	font-size: 30px;
 }
 
-#share {
+#add-to-cart-wrapper {
+	display: grid;
+	place-items: center;
+}
+
+#add-to-cart {
 	padding: 20px;
 	background-color: var(--color-1);
 	border: none;
 	color: black;
 	font-size: 30px;
 	cursor: pointer;
+	width: fit-content;
+	margin: 0 auto;
 }
 
-#share:hover {
+#add-to-cart:hover {
 	background-color: var(--color-2);
 	color: white;
 }
@@ -156,7 +177,7 @@ ul {
 
 #accordion .input-group {
 	display: grid;
-	transition: max-height 0.3s ease-in-out;
+	transition: max-height 0.5s ease-in-out;
 	background-color: var(--color-1);
 	max-height: 0px;
 	overflow: hidden;
@@ -164,7 +185,7 @@ ul {
 }
 
 #accordion .input-group.open {
-	max-height: 1000px;
+	max-height: 2000px;
 	padding: 10px
 }
 
