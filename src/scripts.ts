@@ -1,4 +1,4 @@
-import { Category, Data, Pin } from './types'
+import { Category, Data, Item } from './types'
 import { selectorData } from './data'
 
 /*
@@ -9,6 +9,7 @@ On Page Load
 
 const {pals, pronouns, flags, personalities, accessibility}: Data = selectorData
 
+renderItemTypeToggle()
 renderSelected()
 renderAddToCartButton()
 renderInputs()
@@ -25,9 +26,8 @@ Functions
 */
 
 function toggleNothingSelected() {
-	const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
-	const hasChecked: boolean = checkboxes.some(checkbox => checkbox.checked)
-	if (hasChecked) {
+	const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]:checked'))
+	if (checkboxes.length > 0) {
 		const nothingSelected: HTMLElement = document.querySelector('#nothing-selected') as HTMLElement
 		nothingSelected.style.display = 'none'
 	} else {
@@ -81,7 +81,7 @@ function onlyAllowOnePal(checkbox: HTMLInputElement) {
 	})
 }
 
-function renderSelected(): void {
+function renderSelected(preselectedIds?: string[]): void {
 	const main: HTMLDivElement | null = document.querySelector('#wrapper')
 	if (!main) return
 	
@@ -105,19 +105,28 @@ function renderSelected(): void {
 	const accessibilityItems: HTMLLIElement[] = renderSelectedListItems(accessibility)
 
 	const combined: HTMLLIElement[] = [...palItems, ...pronounItems, ...flagItems, ...plaqueItems, ...accessibilityItems, ...reversedPalItems]
-	combined.forEach(item => list.appendChild(item))
+	if (combined.length > 0) {
+		combined.forEach(item => {
+			if (preselectedIds?.length > 0 && preselectedIds?.includes(item.dataset.checkid)) item.classList.add('selected')
+			list.appendChild(item)
+		})
+	}
 
 	const nothingSelected: HTMLParagraphElement = document.createElement('p')
 	nothingSelected.id = 'nothing-selected'
 	nothingSelected.innerText = 'Pick some pins!'
-
-	section.append(nothingSelected)
+	
 	section.append(list)
+	section.append(nothingSelected)
 	main.append(section)
 }
 
 function renderSelectedListItems(category: Category, isPals: boolean = false, isBottoms: boolean = false): HTMLLIElement[] {
+	const type = getCurrentItemType()
 	return Object.keys(category).map(checkId => {
+		// Confirm the item is available in the current type
+		if (!category[checkId].prices[type]) return
+
 		const item: HTMLLIElement = document.createElement('li')
 		item.classList.add('tag')
 		isPals ? item.classList.add('palsItem') : item.classList.add('plaque')
@@ -132,10 +141,10 @@ function renderSelectedListItems(category: Category, isPals: boolean = false, is
 		item.appendChild(img)
 
 		return item
-	})
+	}).filter(item => item !== undefined) as HTMLLIElement[]
 }
 
-function renderInputs(): void {
+function renderInputs(preselectedIds?: string[]): void {
 	const main: HTMLDivElement | null = document.querySelector('#wrapper')
 	if (!main) return
 	
@@ -153,6 +162,11 @@ function renderInputs(): void {
 
 	Object.keys(selectorData).forEach((id: keyof Data) => {
 		const category: Category = selectorData[id]
+
+		// Confirm the item is available in the current type
+		const type = getCurrentItemType()
+		const hasItems = Object.values(category).some(item => item.prices[type])
+		if (!hasItems) return
 
 		const listItem: HTMLLIElement = document.createElement('li')
 		listItem.id = id
@@ -189,21 +203,25 @@ function renderInputs(): void {
 
 		listItem.appendChild(button)
 
-		const listItemWrapper: HTMLDivElement = document.createElement('div')
+		const listWrapper: HTMLDivElement = document.createElement('div')
 		// <div id="pals-input-group" class="input-group" aria-hidden="true">
-		listItemWrapper.id = `${id}-input-group`
-		listItemWrapper.classList.add('input-group')
-		listItemWrapper.ariaHidden = 'true'
+		listWrapper.id = `${id}-input-group`
+		listWrapper.classList.add('input-group')
+		listWrapper.ariaHidden = 'true'
 
-		Object.keys(category).forEach((pin) => {
+		const listItemWrapper: HTMLDivElement = document.createElement('div')
+
+		Object.keys(category).forEach((item) => {
+			if (!category[item].prices[type]) return
 			const label: HTMLLabelElement = document.createElement('label')
-			label.setAttribute('for', pin)
+			label.setAttribute('for', item)
 			label.classList.add('checkbox-wrapper')
-			label.ariaLabel = pin
+			label.ariaLabel = item
 
 			const checkbox: HTMLInputElement = document.createElement('input')
 			checkbox.type = 'checkbox'
-			checkbox.id = checkbox.name = checkbox.value = pin
+			checkbox.id = checkbox.name = checkbox.value = item
+			checkbox.checked = preselectedIds?.includes(item) ? true : false
 
 			checkbox.addEventListener('change', () => {
 				toggleNothingSelected()
@@ -221,13 +239,14 @@ function renderInputs(): void {
 			label.appendChild(checkbox)
 
 			const span: HTMLSpanElement = document.createElement('span')
-			span.innerText = category[pin].name
+			span.innerText = category[item].name
 			label.appendChild(span)
 
 			listItemWrapper.appendChild(label)
 		})
 
-		listItem.appendChild(listItemWrapper)
+		listWrapper.appendChild(listItemWrapper)
+		listItem.appendChild(listWrapper)
 		list.appendChild(listItem)
 	})
 
@@ -262,13 +281,15 @@ function renderAddToCartButton():void {
 
 		// Prepare selected items for query string
 		const flattenedSelectorData: Category = {...pals, ...pronouns, ...flags, ...personalities, ...accessibility}
-		const selectedItemsData: Pin[] = selectedItems.map(item => flattenedSelectorData[item])
+		const selectedItemsData: Item[] = selectedItems.map(item => flattenedSelectorData[item])
 
 		// Add to cart
-		const queryString = selectedItemsData.reduce((acc, item) => {
-			return acc + `id[]=${item.id}&quantity[]=1&`
+		const type = getCurrentItemType()
+		const pathParam = selectedItemsData.reduce((acc, item) => {
+			return acc + `${item.ids[type]}:1,`
 		}, '').slice(0, -1)
-		const url = `https://www.kittywithacupcake.com/cart/add?${queryString}`
+		// add ?storefront=true to end to go to cart page instead of checkout
+		const url = `https://www.kittywithacupcake.com/cart/${pathParam}`
 		window.open(url, '_blank')
 	})
 
@@ -351,14 +372,17 @@ function updatePrice(): void {
 }
 
 function calculatePrice(selectedData: Data): number {
-	let price = 0
+	const type = getCurrentItemType()
 
-	// Calculate base price
+	// Calculate price
+	let price = 0
 	Object.keys(selectedData).forEach((category: keyof Data) => {
 		Object.keys(selectedData[category]).forEach((slug: string) => {
-			price += selectedData[category][slug].price
+			price += selectedData[category][slug].prices[type]
 		})
 	})
+
+	if (type === 'sticker' || type === 'bGrade') return price
 
 	// Calculate discount
 	const categoryCounts = {
@@ -382,4 +406,82 @@ function calculatePrice(selectedData: Data): number {
 
 	// Return total
 	return price
+}
+
+function renderItemTypeToggle(): void {
+	const header: HTMLElement | null = document.querySelector('header:has(h1)')
+	if (!header) return
+
+	const toggleWrapper: HTMLDivElement = document.createElement('div')
+	toggleWrapper.id = 'toggle-wrapper'
+
+	const itemTypes = ['pins', 'stickers', 'b-grade pins']
+	const typeFromLocalStorage = localStorage.getItem('type')
+
+	itemTypes.forEach((type: string) => {
+		const label: HTMLLabelElement = document.createElement('label')
+		label.classList.add('toggle-label')
+		label.innerText = type
+			.split('-').map(word => capitalize(word)).join('-')
+			.split(' ').map(word => capitalize(word)).join(' ')
+
+		const input: HTMLInputElement = document.createElement('input')
+		input.type = 'radio'
+		input.name = 'item-type'
+		input.value = type
+		input.id = type
+		input.addEventListener('change', (e: Event) => {
+			// Get selected items
+			const selected: HTMLElement[] = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+			const selectedIds: string[] = selected.map(item => item.id)
+
+			updateTypeLocalStorage()
+			scrapOldUI()
+			renderSelected(selectedIds)
+			renderAddToCartButton()
+			renderInputs(selectedIds)
+			updatePrice()
+			toggleNothingSelected()
+		})
+
+		// Default to pins if no local storage
+		if (typeFromLocalStorage === type) input.checked = true
+		if (!typeFromLocalStorage && type === 'pins') input.checked = true
+
+		label.appendChild(input)
+		toggleWrapper.appendChild(label)
+	})
+
+	header.appendChild(toggleWrapper)
+}
+
+function getCurrentItemType(): keyof Item['prices'] {
+	// Get type
+	const typeInput = document.querySelector('input[name="item-type"]:checked')
+	const rawType: string = typeInput ? (typeInput as HTMLInputElement).value : 'pins'
+	let type: keyof Item['prices'] = 'pin'
+	if (rawType === 'stickers') type = 'sticker'
+	if (rawType === 'b-grade pins') type = 'bGrade'
+
+	return type
+}
+
+function scrapOldUI(): void {
+	const tagWrapper: HTMLElement | null = document.querySelector('#accordion')
+	if (tagWrapper) tagWrapper.remove()
+	
+	const selectionInput: HTMLElement | null = document.querySelector('#selected')
+	if (selectionInput) selectionInput.remove()
+}
+
+function updateTypeLocalStorage(): void {
+	const typeInput = document.querySelector('input[name="item-type"]:checked')
+	const type: string = typeInput ? (typeInput as HTMLInputElement).value : 'pins'
+	localStorage.setItem('type', type)
+}
+
+function setTypeFromLocalStorage(): void {
+	const type: string = localStorage.getItem('type') || 'pins'
+	const typeInput = document.querySelector(`#${type}`)
+	if (typeInput) (typeInput as HTMLInputElement).checked = true
 }

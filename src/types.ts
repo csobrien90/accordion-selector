@@ -13,14 +13,26 @@ export interface Data {
 }
 
 export interface Category {
-	[slug: string]: Pin
+	[slug: string]: Item
 }
 
-export interface Pin {
+export interface Item {
 	name: string
 	image: string
 	image2?: string
 	alt: string
-	id: string
-	price: number
+	ids: Id,
+	prices: Price
+}
+
+export interface Id {
+	pin: string
+	sticker?: string
+	bGrade?: string
+}
+
+export interface Price {
+	pin: number
+	sticker?: number
+	bGrade?: number
 }
