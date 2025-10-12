@@ -3,11 +3,33 @@ import { selectorData } from './data'
 
 /*
 __________________
+Settings
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+*/
+
+const B_GRADE_SALE_ACTIVE = false
+
+/*
+__________________
 On Page Load
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 */
 
-const {pals, pronouns, flags, personalities, accessibility}: Data = selectorData
+let filteredData: any = {...selectorData}
+if (!B_GRADE_SALE_ACTIVE) {
+	for (const category in filteredData) {
+		for (const item in filteredData[category]) {
+			if (filteredData[category][item].ids.bGrade) {
+				delete filteredData[category][item].ids.bGrade
+			}
+			if (filteredData[category][item].prices.bGrade) {
+				delete filteredData[category][item].prices.bGrade
+			}
+		}
+	}
+}
+const {pals, pronouns, flags, personalities, accessibility}: Data = filteredData
+
 
 renderItemTypeToggle()
 renderSelected()
@@ -18,6 +40,8 @@ setCheckboxesFromLocalStorage()
 toggleNothingSelected()
 updatePrice()
 
+const eventSessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+// sendEventLog("pageLoad", {referredFrom: document.referrer})
 
 /*
 __________________
@@ -212,7 +236,8 @@ function renderInputs(preselectedIds?: string[]): void {
 		const listItemWrapper: HTMLDivElement = document.createElement('div')
 
 		Object.keys(category).forEach((item) => {
-			if (!category[item].prices[type]) return
+			if (!category[item].prices[type] || !category[item].ids[type]) return
+
 			const label: HTMLLabelElement = document.createElement('label')
 			label.setAttribute('for', item)
 			label.classList.add('checkbox-wrapper')
@@ -285,12 +310,45 @@ function renderAddToCartButton():void {
 
 		// Add to cart
 		const type = getCurrentItemType()
-		const pathParam = selectedItemsData.reduce((acc, item) => {
-			return acc + `${item.ids[type]}:1,`
-		}, '').slice(0, -1)
+		const pathArr = selectedItemsData.reduce((acc, item) => {
+			acc[item.ids[type]] = 1
+			return acc
+		}, {} as any)
+
+		// Get cart's current contents
+		let cartContents
+		try {
+			// @ts-ignore
+			const cartContentsResponse = await fetch(window?.Shopify?.routes?.root + 'cart.js')
+			cartContents = await cartContentsResponse.json()
+		} catch (error) {
+			cartContents = {}
+		}
+
+		if (cartContents.hasOwnProperty('items') && Array.isArray(cartContents.items) && cartContents.items.length > 0) {
+			cartContents.items.forEach((item:any) => {
+				if (pathArr.hasOwnProperty(item.variant_id)) {
+					pathArr[item.variant_id] += item.quantity
+				} else {
+					pathArr[item.variant_id] = item.quantity
+				}
+			})
+		}
+
 		// add ?storefront=true to end to go to cart page instead of checkout
+		const pathParam = Object.entries(pathArr).map(([key, value]) => `${key}:${value}`).join(',')
 		const url = `https://www.kittywithacupcake.com/cart/${pathParam}`
-		window.open(url, '_blank')
+
+		// Send an event log to an outside server
+		try {
+			// await sendEventLog("addToCart", {selectedItemsData, cartContents, url})
+		} catch (error) {
+			console.error('Event log failed: ', error)
+		}
+
+		setTimeout(() => {
+			window.open(url, '_top')
+		})
 	})
 
 	selectedEl.appendChild(addToCartWrapper)
@@ -416,6 +474,7 @@ function renderItemTypeToggle(): void {
 	toggleWrapper.id = 'toggle-wrapper'
 
 	const itemTypes = ['pins', 'stickers', 'b-grade pins']
+	if (!B_GRADE_SALE_ACTIVE) itemTypes.pop()
 	const typeFromLocalStorage = localStorage.getItem('type')
 
 	itemTypes.forEach((type: string) => {
@@ -484,4 +543,29 @@ function setTypeFromLocalStorage(): void {
 	const type: string = localStorage.getItem('type') || 'pins'
 	const typeInput = document.querySelector(`#${type}`)
 	if (typeInput) (typeInput as HTMLInputElement).checked = true
+}
+
+async function sendEventLog(event: "pageLoad" | "addToCart", data: any): Promise<boolean> {
+	const url = 'https://chadobrien-pals-builde-39.deno.dev/'
+	const body = {
+		event,
+		data,
+		eventSessionId
+	}
+
+	const response = await fetch(url, {
+		method: 'POST',
+		keepalive: true,
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(body)
+	})
+
+	if (response.ok) {
+		return true
+	} else {
+		console.error('Failed to send event log')
+		return false
+	}
 }
