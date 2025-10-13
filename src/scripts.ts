@@ -36,9 +36,9 @@ let preselectedIds: string[] = preselectedSet ? preselectedSet.split(',') : []
 
 let openCategory: keyof Data | null = null
 
+renderInputs(preselectedIds, true)
 renderSelected(preselectedIds)
 renderButtons()
-renderInputs()
 setCheckboxesFromLocalStorage(preselectedIds)
 toggleNothingSelected()
 updatePrice()
@@ -131,12 +131,21 @@ function renderSelected(preselectedIds?: string[]): void {
 	const list: HTMLUListElement = document.createElement('ul')
 	list.id = 'tag-wrapper'
 
-	const palItems: HTMLLIElement[] = renderSelectedListItems(pals, true)
-	const reversedPalItems: HTMLLIElement[] = renderSelectedListItems(pals, true, true).reverse()
-	const pronounItems: HTMLLIElement[] = renderSelectedListItems(pronouns)
-	const flagItems: HTMLLIElement[] = renderSelectedListItems(flags)
-	const plaqueItems: HTMLLIElement[] = renderSelectedListItems(personalities)
-	const accessibilityItems: HTMLLIElement[] = renderSelectedListItems(accessibility)
+	const status = {
+		someWereRemoved: false,
+		preselectedIds
+	}
+
+	const palItems: HTMLLIElement[] = renderSelectedListItems(status, pals, true)
+	const reversedPalItems: HTMLLIElement[] = renderSelectedListItems(status, pals, true, true).reverse()
+	const pronounItems: HTMLLIElement[] = renderSelectedListItems(status, pronouns)
+	const flagItems: HTMLLIElement[] = renderSelectedListItems(status, flags)
+	const plaqueItems: HTMLLIElement[] = renderSelectedListItems(status, personalities)
+	const accessibilityItems: HTMLLIElement[] = renderSelectedListItems(status, accessibility)
+
+	if (status.someWereRemoved) {
+		showNotification('Some items were removed from your selection because they are not available in the selected type.', 7000, 'error')
+	}
 
 	const combined: HTMLLIElement[] = [...palItems, ...pronounItems, ...flagItems, ...plaqueItems, ...accessibilityItems, ...reversedPalItems]
 	if (combined.length > 0) {
@@ -154,14 +163,18 @@ function renderSelected(preselectedIds?: string[]): void {
 	
 	section.append(list)
 	section.append(nothingSelected)
-	main.append(section)
+	main.firstChild ? main.insertBefore(section, main.firstChild) : main.appendChild(section)
 }
 
-function renderSelectedListItems(category: Category, isPals: boolean = false, isBottoms: boolean = false): HTMLLIElement[] {
+function renderSelectedListItems(status: { someWereRemoved: boolean, preselectedIds?: string[] }, category: Category, isPals: boolean = false, isBottoms: boolean = false): HTMLLIElement[] {
 	const type = getCurrentItemType()
-	return Object.keys(category).map(checkId => {
+	const items = Object.keys(category).map(checkId => {
 		// Confirm the item is available in the current type
-		if (!category[checkId].prices[type]) return
+		if (!category[checkId].prices[type]) {
+			const hasPinId = category[checkId].ids["pin"]
+			const isPreselected = status.preselectedIds?.includes(checkId)
+			return hasPinId && isPreselected ? null : undefined
+		}
 
 		const item: HTMLLIElement = document.createElement('li')
 		item.classList.add('tag')
@@ -177,10 +190,17 @@ function renderSelectedListItems(category: Category, isPals: boolean = false, is
 		item.appendChild(img)
 
 		return item
-	}).filter(item => item !== undefined) as HTMLLIElement[]
+	})
+
+	if (items.some(i => i === null)) {
+		status.someWereRemoved = true
+	}
+
+	return items.filter(item => !!item) as HTMLLIElement[]
+	
 }
 
-function renderInputs(preselectedIds?: string[]): void {
+function renderInputs(preselectedIds?: string[], firstLoad: boolean = false): void {
 	const main: HTMLDivElement | null = document.querySelector('#wrapper')
 	if (!main) return
 	
@@ -196,16 +216,13 @@ function renderInputs(preselectedIds?: string[]): void {
 	const list: HTMLUListElement = document.createElement('ul')
 	list.id = 'accordion'
 
-	renderItemTypeToggle(list)
+	renderItemTypeToggle(list, firstLoad)
+	section.appendChild(list)
+	main.appendChild(section)
 
 	Object.keys(selectorData).forEach((id: keyof Data) => {
 		const category: Category = selectorData[id]
 		const wasOpen = openCategory === id
-
-		// Confirm the item is available in the current type
-		const type = getCurrentItemType()
-		const hasItems = Object.values(category).some(item => item.prices[type])
-		if (!hasItems) return
 
 		const listItem: HTMLLIElement = document.createElement('li')
 		listItem.id = id
@@ -250,9 +267,13 @@ function renderInputs(preselectedIds?: string[]): void {
 		listWrapper.ariaHidden = wasOpen ? 'false' : 'true'
 
 		const listItemWrapper: HTMLDivElement = document.createElement('div')
+		const type = getCurrentItemType()
 
 		Object.keys(category).forEach((item) => {
-			if (!category[item].prices[type] || !category[item].ids[type]) return
+			if (!category[item].prices[type] || !category[item].ids[type]) {
+				// Item is not available in this type so we need to unselect it if it's preselected
+				return
+			}
 
 			const label: HTMLLabelElement = document.createElement('label')
 			label.setAttribute('for', item)
@@ -290,16 +311,14 @@ function renderInputs(preselectedIds?: string[]): void {
 		listItem.appendChild(listWrapper)
 		list.appendChild(listItem)
 	})
-
-	main.appendChild(list)
 }
 
 function renderAddToCartButton(element: HTMLElement):void {
 	if (!element) return
 
-	const price: HTMLParagraphElement = document.createElement('p')
+	const price: HTMLSpanElement = document.createElement('span')
 	price.id = 'price'
-	price.innerText = 'Preview total: $0.00'
+	price.innerText = '(Preview total: $0.00)'
 	
 	const addToCartButton: HTMLButtonElement = document.createElement('button')
 	addToCartButton.id = 'add-to-cart'
@@ -361,7 +380,7 @@ function renderAddToCartButton(element: HTMLElement):void {
 		})
 	})
 
-	element.appendChild(price)
+	addToCartButton.append(price)
 	element.appendChild(addToCartButton)
 }
 
@@ -443,8 +462,8 @@ function renderShareLinkButton(element: HTMLElement):void {
 }
 
 function renderButtons(): void {
-	const main: HTMLDivElement | null = document.querySelector('#wrapper')
-	if (!main) return
+	const selectedSection: HTMLDivElement | null = document.querySelector('#selection-input')
+	if (!selectedSection) return
 
 	const wrapper = document.createElement('div')
 	wrapper.id = 'buttons-wrapper'
@@ -453,7 +472,7 @@ function renderButtons(): void {
 	renderShareButton(wrapper)
 	renderShareLinkButton(wrapper)
 
-	main.appendChild(wrapper)
+	selectedSection.insertBefore(wrapper, selectedSection.firstChild)
 }
 
 function capitalize(word: string): string {
@@ -486,7 +505,7 @@ function updatePrice(): void {
 	const price: number = calculatePrice(selectedData)
 	const priceElement: HTMLElement | null = document.querySelector('#price')
 	if (priceElement) {
-		priceElement.innerText = `Preview total: $${price.toFixed(2)}`
+		priceElement.innerText = `(Preview total: $${price.toFixed(2)})`
 	}
 }
 
@@ -527,7 +546,7 @@ function calculatePrice(selectedData: Data): number {
 	return price
 }
 
-function renderItemTypeToggle(element: HTMLElement): void {
+function renderItemTypeToggle(element: HTMLElement, firstLoad: boolean = false): void {
 	if (!element) return
 
 	const toggleWrapper: HTMLDivElement = document.createElement('div')
@@ -569,9 +588,9 @@ function renderItemTypeToggle(element: HTMLElement): void {
 
 			updateTypeLocalStorage()
 			scrapOldUI()
+			renderInputs(selectedIds)
 			renderSelected(selectedIds)
 			renderButtons()
-			renderInputs(selectedIds)
 			updatePrice()
 			toggleNothingSelected()
 		})
@@ -580,8 +599,8 @@ function renderItemTypeToggle(element: HTMLElement): void {
 		if (typeFromLocalStorage === type) input.checked = true
 		if (!typeFromLocalStorage && type === 'pins') input.checked = true
 
-		// Override with URL param if it exists
-		if (typeFromUrl === type) {
+		// Override with URL param if it exists (only on first load)
+		if (typeFromUrl === type && firstLoad) {
 			input.checked = true
 			updateTypeLocalStorage()
 		}
@@ -596,7 +615,8 @@ function renderItemTypeToggle(element: HTMLElement): void {
 function getCurrentItemType(): keyof Item['prices'] {
 	// Get type
 	const typeInput = document.querySelector('input[name="item-type"]:checked')
-	const rawType: string = typeInput ? (typeInput as HTMLInputElement).value : 'pins'
+	
+	const rawType: string = typeInput?.id
 	let type: keyof Item['prices'] = 'pin'
 	if (rawType === 'stickers') type = 'sticker'
 	if (rawType === 'b-grade pins') type = 'bGrade'
@@ -607,9 +627,12 @@ function getCurrentItemType(): keyof Item['prices'] {
 function scrapOldUI(): void {
 	const tagWrapper: HTMLElement | null = document.querySelector('#accordion')
 	if (tagWrapper) tagWrapper.remove()
-	
-	const selectionInput: HTMLElement | null = document.querySelector('#selected')
+
+	const selectionInput: HTMLElement | null = document.querySelector('#selection-input')
 	if (selectionInput) selectionInput.remove()
+	
+	const selectionDisplay: HTMLElement | null = document.querySelector('#selected')
+	if (selectionDisplay) selectionDisplay.remove()
 
 	const buttonsWrapper: HTMLElement | null = document.querySelector('#buttons-wrapper')
 	if (buttonsWrapper) buttonsWrapper.remove()

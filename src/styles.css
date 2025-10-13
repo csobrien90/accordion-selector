@@ -173,6 +173,10 @@ ul {
 #add-to-cart {
 	padding: 10px 20px;
 	width: 100%;
+
+	span {
+		font-size: 14px;
+	}
 }
 
 #share-link-button {
@@ -183,6 +187,8 @@ ul {
 	display: grid;
 	grid-template-columns: 1fr 50px 50px;
 	gap: 5px;
+	max-width: 700px;
+	width: 100%;
 	
 	p {
 		grid-column: 1 / -1;
@@ -200,6 +206,10 @@ ul {
 	}
 }
 
+#selection-input {
+	display: grid;
+	gap: 20px;
+}
 
 /* Accordion Selector UI */
 #accordion {
@@ -278,6 +288,7 @@ ul {
 }
 
 #notification {
+	max-width: 350px;
 	position: fixed;
 	bottom: 20px;
 	right: 20px;
@@ -315,7 +326,7 @@ ul {
 }
 
 @media screen and (min-width: 748px) {
-	main {
+	#wrapper {
 		grid-template-columns: 1fr 1fr;
 	}
 	#tag-wrapper, #accordion, #buttons-wrapper {
