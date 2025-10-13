@@ -30,13 +30,16 @@ if (!B_GRADE_SALE_ACTIVE) {
 }
 const {pals, pronouns, flags, personalities, accessibility}: Data = filteredData
 
+const queryParams = new URLSearchParams(window.location.search)
+const preselectedSet = queryParams.get('set')
+let preselectedIds: string[] = preselectedSet ? preselectedSet.split(',') : []
 
-renderItemTypeToggle()
-renderSelected()
-renderAddToCartButton()
+let openCategory: keyof Data | null = null
+
+renderSelected(preselectedIds)
+renderButtons()
 renderInputs()
-// renderShareButton()
-setCheckboxesFromLocalStorage()
+setCheckboxesFromLocalStorage(preselectedIds)
 toggleNothingSelected()
 updatePrice()
 
@@ -74,9 +77,16 @@ function updateLocalStorage() {
 	localStorage.setItem('checked', JSON.stringify(checked))
 }
 
-function setCheckboxesFromLocalStorage() {
+function setCheckboxesFromLocalStorage(preselectedIds: string[] = []) {
 	const checkboxes: HTMLInputElement[] = Array.from(document.querySelectorAll('#accordion input[type="checkbox"]'))
-	const checked: string[] = JSON.parse(localStorage.getItem('checked') || JSON.stringify(['kitty', 'inclusive']))
+	// If there are preselectedIds from the URL, use those instead of localStorage
+	let checked: string[] = []
+	if (preselectedIds.length > 0) {
+		checked = preselectedIds
+	} else {
+		checked = JSON.parse(localStorage.getItem('checked') || JSON.stringify(['kitty', 'inclusive']))
+	}
+
 	checkboxes.forEach(checkbox => checkbox.checked = checked.includes(checkbox.id) ? true : false)
 	updateSelected()
 }
@@ -108,7 +118,7 @@ function onlyAllowOnePal(checkbox: HTMLInputElement) {
 function renderSelected(preselectedIds?: string[]): void {
 	const main: HTMLDivElement | null = document.querySelector('#wrapper')
 	if (!main) return
-	
+
 	// Build "selected" section
 	const section: HTMLElement = document.createElement('section')
 	section.id = 'selected'
@@ -131,14 +141,16 @@ function renderSelected(preselectedIds?: string[]): void {
 	const combined: HTMLLIElement[] = [...palItems, ...pronounItems, ...flagItems, ...plaqueItems, ...accessibilityItems, ...reversedPalItems]
 	if (combined.length > 0) {
 		combined.forEach(item => {
-			if (preselectedIds?.length > 0 && preselectedIds?.includes(item.dataset.checkid)) item.classList.add('selected')
+			if (preselectedIds?.length > 0 && preselectedIds?.includes(item.dataset.checkid)) {
+				item.classList.add('selected')
+			}
 			list.appendChild(item)
 		})
 	}
 
 	const nothingSelected: HTMLParagraphElement = document.createElement('p')
 	nothingSelected.id = 'nothing-selected'
-	nothingSelected.innerText = 'Pick some pins!'
+	nothingSelected.innerText = 'Select some pins to preview!'
 	
 	section.append(list)
 	section.append(nothingSelected)
@@ -177,15 +189,18 @@ function renderInputs(preselectedIds?: string[]): void {
 	section.id = 'selection-input'
 
 	const heading: HTMLHeadingElement = document.createElement('h2')
-	heading.innerText = 'Select your plaques'
+	heading.innerText = 'Select your items'
 	heading.classList.add('sr-only')
 	section.append(heading)
 
 	const list: HTMLUListElement = document.createElement('ul')
 	list.id = 'accordion'
 
+	renderItemTypeToggle(list)
+
 	Object.keys(selectorData).forEach((id: keyof Data) => {
 		const category: Category = selectorData[id]
+		const wasOpen = openCategory === id
 
 		// Confirm the item is available in the current type
 		const type = getCurrentItemType()
@@ -199,7 +214,7 @@ function renderInputs(preselectedIds?: string[]): void {
 		const button: HTMLButtonElement = document.createElement('button')
 		const buttonText: string = id === 'flags' ? 'Pride Flags' : capitalize(id)
 		button.innerText = buttonText
-		button.ariaExpanded = 'false'
+		button.ariaExpanded = wasOpen ? 'true' : 'false'
 		// button.ariaControls = `${id}-input-group`
 
 		button.addEventListener('click', () => {
@@ -231,7 +246,8 @@ function renderInputs(preselectedIds?: string[]): void {
 		// <div id="pals-input-group" class="input-group" aria-hidden="true">
 		listWrapper.id = `${id}-input-group`
 		listWrapper.classList.add('input-group')
-		listWrapper.ariaHidden = 'true'
+		if (wasOpen) listWrapper.classList.add('open')
+		listWrapper.ariaHidden = wasOpen ? 'false' : 'true'
 
 		const listItemWrapper: HTMLDivElement = document.createElement('div')
 
@@ -278,22 +294,16 @@ function renderInputs(preselectedIds?: string[]): void {
 	main.appendChild(list)
 }
 
-function renderAddToCartButton():void {
-	const selectedEl: HTMLDivElement | null = document.querySelector('#selected')
-	if (!selectedEl) return
-
-	const addToCartWrapper: HTMLDivElement = document.createElement('div')
-	addToCartWrapper.id = 'add-to-cart-wrapper'
+function renderAddToCartButton(element: HTMLElement):void {
+	if (!element) return
 
 	const price: HTMLParagraphElement = document.createElement('p')
 	price.id = 'price'
 	price.innerText = 'Preview total: $0.00'
-	addToCartWrapper.appendChild(price)
-
+	
 	const addToCartButton: HTMLButtonElement = document.createElement('button')
 	addToCartButton.id = 'add-to-cart'
 	addToCartButton.innerText = 'Add To Cart'
-	addToCartWrapper.appendChild(addToCartButton)
 
 	addToCartButton.addEventListener('click', async (e: Event): Promise<void> => {
 		e.preventDefault()
@@ -351,16 +361,17 @@ function renderAddToCartButton():void {
 		})
 	})
 
-	selectedEl.appendChild(addToCartWrapper)
+	element.appendChild(price)
+	element.appendChild(addToCartButton)
 }
 
-function renderShareButton():void {
-	const main: HTMLDivElement | null = document.querySelector('#wrapper')
-	if (!main) return
+function renderShareButton(element: HTMLElement):void {
+	if (!element) return
 
 	const shareButton: HTMLButtonElement = document.createElement('button')
-	shareButton.id = 'share'
-	shareButton.innerText = 'Share your set!'
+	shareButton.id = 'share-button'
+	shareButton.title = 'Share your set!'
+	shareButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 50 50"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg>	`
 
 	shareButton.addEventListener('click', async (e: Event): Promise<void> => {
 		e.preventDefault()
@@ -392,7 +403,57 @@ function renderShareButton():void {
 		}
 	})
 
-	main.appendChild(shareButton)
+	element.appendChild(shareButton)
+}
+
+function renderShareLinkButton(element: HTMLElement):void {
+	if (!element) return
+
+	const shareLinkButton: HTMLButtonElement = document.createElement('button')
+	shareLinkButton.id = 'share-link-button'
+	shareLinkButton.title = 'Copy share link'
+	shareLinkButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" id="icon"><path d="M11.9474,19a4.9476,4.9476,0,0,1-3.4991-8.4465l5.1053-5.1043a4.9482,4.9482,0,0,1,6.9981,6.9976l-.5523.5526-1.4158-1.4129.5577-.5579a2.95,2.95,0,0,0-.0039-4.1653,3.02,3.02,0,0,0-4.17,0l-5.1047,5.104a2.9474,2.9474,0,0,0,0,4.1692,3.02,3.02,0,0,0,4.17,0l1.4143,1.4145A4.9176,4.9176,0,0,1,11.9474,19Z"/><path d="M19.9474,17a4.9476,4.9476,0,0,1-3.4991-8.4465l.5526-.5526,1.4143,1.4146-.5526.5523a2.9476,2.9476,0,0,0,0,4.1689,3.02,3.02,0,0,0,4.17,0c.26-.26,4.7293-4.7293,5.1053-5.1045a2.951,2.951,0,0,0,0-4.1687,3.02,3.02,0,0,0-4.17,0L21.5536,3.449a4.9483,4.9483,0,0,1,6.9981,6.9978c-.3765.376-4.844,4.8428-5.1038,5.1035A4.9193,4.9193,0,0,1,19.9474,17Z"/><path d="M24,30H4a2.0021,2.0021,0,0,1-2-2V8A2.0021,2.0021,0,0,1,4,6H8V8H4V28H24V18h2V28A2.0021,2.0021,0,0,1,24,30Z"/><rect fill="none" width="32" height="32"/></svg>`
+
+	shareLinkButton.addEventListener('click', async (e: Event): Promise<void> => {
+		e.preventDefault()
+
+		const setDiv: HTMLDivElement | null = document.querySelector('#tag-wrapper')
+		if (!setDiv) return
+
+		const selected: HTMLElement[] = Array.from(document.querySelectorAll('.selected'))
+		if (selected.length === 0) return
+		let selectedItems: string[] = selected.map(item => item.dataset.checkid || '')
+		selectedItems = Array.from(new Set(selectedItems))
+
+		const baseUrl = window.location.origin + window.location.pathname
+		const params = new URLSearchParams()
+		params.set('type', `${getCurrentItemType()}s`)
+		params.set('set', selectedItems.join(','))
+		const shareLink = `${baseUrl}?${params.toString()}`
+
+		navigator.clipboard.writeText(shareLink).then(() => {
+			showNotification('Share link copied to clipboard!')
+			shareLinkButton.blur()
+		}).catch(() => {
+			showNotification(`Something went wrong copying the link. Instead, manually copy this url: ${shareLink}`, 20000, 'error')
+		})
+	})
+
+	element.appendChild(shareLinkButton)
+}
+
+function renderButtons(): void {
+	const main: HTMLDivElement | null = document.querySelector('#wrapper')
+	if (!main) return
+
+	const wrapper = document.createElement('div')
+	wrapper.id = 'buttons-wrapper'
+
+	renderAddToCartButton(wrapper)
+	renderShareButton(wrapper)
+	renderShareLinkButton(wrapper)
+
+	main.appendChild(wrapper)
 }
 
 function capitalize(word: string): string {
@@ -466,9 +527,8 @@ function calculatePrice(selectedData: Data): number {
 	return price
 }
 
-function renderItemTypeToggle(): void {
-	const header: HTMLElement | null = document.querySelector('header:has(h1)')
-	if (!header) return
+function renderItemTypeToggle(element: HTMLElement): void {
+	if (!element) return
 
 	const toggleWrapper: HTMLDivElement = document.createElement('div')
 	toggleWrapper.id = 'toggle-wrapper'
@@ -476,6 +536,10 @@ function renderItemTypeToggle(): void {
 	const itemTypes = ['pins', 'stickers', 'b-grade pins']
 	if (!B_GRADE_SALE_ACTIVE) itemTypes.pop()
 	const typeFromLocalStorage = localStorage.getItem('type')
+
+	// Check url params for type
+	const queryParams = new URLSearchParams(window.location.search)
+	const typeFromUrl = queryParams.get('type')
 
 	itemTypes.forEach((type: string) => {
 		const label: HTMLLabelElement = document.createElement('label')
@@ -494,10 +558,19 @@ function renderItemTypeToggle(): void {
 			const selected: HTMLElement[] = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
 			const selectedIds: string[] = selected.map(item => item.id)
 
+			// Remember open category
+			const openInputGroup: HTMLDivElement | null = document.querySelector('.input-group.open')
+			if (openInputGroup) {
+				const parentId = openInputGroup.parentElement?.id as keyof Data
+				openCategory = parentId
+			} else {
+				openCategory = null
+			}
+
 			updateTypeLocalStorage()
 			scrapOldUI()
 			renderSelected(selectedIds)
-			renderAddToCartButton()
+			renderButtons()
 			renderInputs(selectedIds)
 			updatePrice()
 			toggleNothingSelected()
@@ -507,11 +580,17 @@ function renderItemTypeToggle(): void {
 		if (typeFromLocalStorage === type) input.checked = true
 		if (!typeFromLocalStorage && type === 'pins') input.checked = true
 
+		// Override with URL param if it exists
+		if (typeFromUrl === type) {
+			input.checked = true
+			updateTypeLocalStorage()
+		}
+
 		label.appendChild(input)
 		toggleWrapper.appendChild(label)
 	})
 
-	header.appendChild(toggleWrapper)
+	element.appendChild(toggleWrapper)
 }
 
 function getCurrentItemType(): keyof Item['prices'] {
@@ -531,6 +610,9 @@ function scrapOldUI(): void {
 	
 	const selectionInput: HTMLElement | null = document.querySelector('#selected')
 	if (selectionInput) selectionInput.remove()
+
+	const buttonsWrapper: HTMLElement | null = document.querySelector('#buttons-wrapper')
+	if (buttonsWrapper) buttonsWrapper.remove()
 }
 
 function updateTypeLocalStorage(): void {
@@ -568,4 +650,23 @@ async function sendEventLog(event: "pageLoad" | "addToCart", data: any): Promise
 		console.error('Failed to send event log')
 		return false
 	}
+
+}
+
+function showNotification(message: string, duration: number = 3000, type: 'success' | 'error' = 'success'): void {
+	const existingNotification: HTMLElement | null = document.querySelector('#notification')
+	if (existingNotification) existingNotification.remove()
+
+	const notification: HTMLDivElement = document.createElement('div')
+	notification.id = 'notification'
+	notification.classList.add(type)
+	notification.innerText = message
+	document.body.appendChild(notification)
+
+	setTimeout(() => {
+		notification.classList.add('hide')
+		setTimeout(() => {
+			notification.remove()
+		}, 300)
+	}, duration)
 }
