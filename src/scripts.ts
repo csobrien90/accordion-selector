@@ -390,10 +390,12 @@ function renderShareButton(element: HTMLElement):void {
 	const shareButton: HTMLButtonElement = document.createElement('button')
 	shareButton.id = 'share-button'
 	shareButton.title = 'Share your set!'
-	shareButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 50 50"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg>	`
+	const shareIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 50 50"><path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/><path d="M24 7h2v21h-2z"/><path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/></svg>	`
+	shareButton.innerHTML = shareIcon
 
 	shareButton.addEventListener('click', async (e: Event): Promise<void> => {
 		e.preventDefault()
+		shareButton.innerHTML = `<svg id="loading-svg" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="7.5 -5 5 50"><path d="M 20, 20 m 10, 0 a 20,20 0 1,0 -40,0 a 20,20 0 1,0 40,0" fill="none" stroke="black" stroke-width="3" stroke-dasharray="64"></path></svg>`
 
 		const setDiv: HTMLDivElement | null = document.querySelector('#tag-wrapper')
 		if (!setDiv) return
@@ -415,10 +417,17 @@ function renderShareButton(element: HTMLElement):void {
 			navigator.share(toShare).then(() => {
 				console.log('Share successful!')
 			}).catch(() => {
-				console.error('Share failed - something went wrong during share.')
+				showNotification('Something went wrong during share - please try again.', 5000, 'error')
+			}).finally(() => {
+				shareButton.innerHTML = shareIcon
+				shareButton.blur()
 			})
 		} else {
-			console.error('Share failed - content is not shareable.')
+			showNotification('Share feature is not supported on your device', 5000, 'error')
+			shareButton.disabled = true
+			shareButton.title = 'Share not supported on this device'
+			shareButton.innerHTML = shareIcon
+			shareButton.blur()
 		}
 	})
 

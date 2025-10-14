@@ -156,15 +156,22 @@ ul {
 	margin: 0 auto;
 	border-radius: 8px;
 
-	&:hover, &:focus {
-		background-color: var(--color-2);
-		color: white;
-		
-		svg {
-			fill: white;
-		}
+	&:disabled {
+		pointer-events: none;
+		opacity: 0.6;
 	}
 
+	&:not(:disabled) {
+		&:hover, &:focus {
+			background-color: var(--color-2);
+			color: white;
+
+			svg {
+				fill: white;
+			}
+		}
+	}
+	
 	&:active {
 		transform: scale(0.95);
 	}
@@ -208,6 +215,7 @@ ul {
 
 #selection-input {
 	display: grid;
+	align-content: start;
 	gap: 20px;
 }
 
@@ -227,13 +235,14 @@ ul {
 		font-size: 20px;
 		text-align:left;
 		border-radius:0px;
+		color: var(--color-5);
 
 		&:hover, &:focus {
 			background-color: var(--color-5);
 			color: white;
 			cursor: pointer;
 		}
-		
+
 		&:after {
 			content: '\002B';
 			color: white;
@@ -322,6 +331,20 @@ ul {
 	&.error {
 		color: white;
 		background-color: var(--color-2);
+	}
+}
+
+#loading-svg {
+	scale: 80%;
+	animation: rotate 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
 	}
 }
 
