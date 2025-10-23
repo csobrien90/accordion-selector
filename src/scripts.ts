@@ -417,7 +417,9 @@ function renderShareButton(element: HTMLElement):void {
 			navigator.share(toShare).then(() => {
 				console.log('Share successful!')
 			}).catch(() => {
-				showNotification('Something went wrong during share - please try again.', 5000, 'error')
+				showNotification('Something went wrong during share - copy link to share.', 5000, 'error')
+				shareButton.disabled = true
+				shareButton.title = 'Share not supported on this device'
 			}).finally(() => {
 				shareButton.innerHTML = shareIcon
 				shareButton.blur()
